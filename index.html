@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Drama Hub Search</title>
+<style>
+:root{--black:#0B0B0B;--green:#006B3C;--gold:#D4AF37;--muted:#b9b9b9;--card:#141414;--border:#292929}
+*{box-sizing:border-box}body{margin:0;padding:24px;background:var(--black);color:#f5f5f5;font-family:Georgia,serif}
+.wrap{max-width:1050px;margin:auto}.searchbox{background:#111;border:1px solid var(--border);border-radius:16px;padding:18px}
+label{display:block;color:var(--gold);font:13px Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;margin-bottom:9px}
+input{width:100%;padding:15px 16px;border:1px solid #333;border-radius:12px;background:#0b0b0b;color:white;font:16px Georgia,serif;outline:none}
+input:focus{border-color:var(--green);box-shadow:0 0 0 3px #006b3c30}.hint,.count{color:var(--muted);font:13px Arial,sans-serif}.hint{margin-top:9px}.count{margin:20px 2px 12px}
+.results{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.card{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--green);border-radius:14px;padding:16px}
+.title{font-size:20px;font-weight:700}.stars{color:var(--gold);font-family:Arial,sans-serif;margin-top:5px}.meta{color:#ddd;font:13px/1.7 Arial,sans-serif;margin-top:8px}.note{color:var(--muted);font-size:13px;margin-top:8px;font-style:italic}
+.empty{text-align:center;color:var(--muted);padding:35px;border:1px dashed #333;border-radius:14px}
+@media(max-width:700px){body{padding:14px}.results{grid-template-columns:1fr}}
+</style></head>
+<body><div class="wrap">
+<div class="searchbox">
+<label for="search">🔎 Search dramas by name or genre</label>
+<input id="search" type="search" placeholder="Try “Iqtidar”, “Romance”, “Comedy”..." autocomplete="off">
+<div class="hint">Results update instantly as you type.</div>
+</div>
+<div id="count" class="count"></div><div id="results" class="results"></div>
+</div>
+<script>
+const dramas=[
+["Tere Bin",3,58,2022,"Romance, Action","First drama I watched 😂"],
+["Ishq Murshid",4,31,2023,"Romantic, Comedy","Funny and romantic 🥹"],
+["Meri Zindagi Hai Tu",3,34,2025,"Romantic, Emotional","First airing drama I watched"],
+["Kabhi Mein Kabhi Tum",4,34,2024,"Romantic","Unique storyline"],
+["Meem Se Mohabbat",5,33,2024,"Romance","No words"],
+["Mohabbat Gumshuda Meri",4,26,2023,"Romance","First Khushal Khan drama I watched"],
+["Dekh Zara Pyaar Se",5,33,2026,"Romantic, Comedy","First romantic comedy I watched"],
+["Kafeel",5,34,2025,"Social Issues","Deserves its own place"],
+["Aik Mohabbat Aur",5,24,2026,"Romantic / Social Drama","Amazing drama unique storyline"],
+["Iqtidar",5,62,2024,"Political Drama and Romance","Amazing a very unique storyline"]
+];
+const input=document.getElementById("search"),results=document.getElementById("results"),count=document.getElementById("count");
+function render(){
+ const q=input.value.trim().toLowerCase();
+ const m=dramas.filter(d=>!q||d[0].toLowerCase().includes(q)||d[4].toLowerCase().includes(q));
+ count.textContent=q?`${m.length} drama${m.length===1?"":"s"} found`:`${dramas.length} dramas in Drama Hub`;
+ results.innerHTML=m.length?m.map(d=>`<div class="card"><div class="title">${d[0]}</div><div class="stars">${"★".repeat(d[1])}${"☆".repeat(5-d[1])}</div><div class="meta">🎬 ${d[2]} episodes &nbsp;•&nbsp; 📅 ${d[3]}<br>🎭 ${d[4]}</div><div class="note">${d[5]}</div></div>`).join(""):`<div class="empty">No dramas found for “${input.value}”.</div>`;
+}
+input.addEventListener("input",render);render();
+</script></body></html>
